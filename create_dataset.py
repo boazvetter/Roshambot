@@ -39,7 +39,7 @@ except FileExistsError:
 # Show webcam feed
 cap = cv2.VideoCapture(0)
 
-print("Press space bar to create dataset")
+print("Press spacebar to create dataset")
 filenumber = 0
 collect = False
 
@@ -69,8 +69,4 @@ while(True):
 
 cap.release()
 cv2.destroyAllWindows()
-
-
-# Take pictures with keystroke
-
 
