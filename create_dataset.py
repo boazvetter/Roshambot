@@ -23,10 +23,10 @@ except:
 
 
 path = os.getcwd()
-img_path = 'images'
-label_path = os.path.join(path, img_path, label_name)
+img_dir = 'images'
+label_path = os.path.join(img_dir, label_name)
 
-# Make directory
+# Make directories
 try:
     os.mkdir('images')
 except FileExistsError:
@@ -37,15 +37,35 @@ except FileExistsError:
     pass    
 
 # Show webcam feed
-
 cap = cv2.VideoCapture(0)
+
+print("Press space bar to create dataset")
+filenumber = 0
+collect = False
 
 while(True):
 	ret, frame = cap.read()
 
 	cv2.imshow('Dataset creator', frame)
-	if cv2.waitkey(1) & 0xFF == ord('q'):
+
+	if filenumber == int(num_pictures):
+		print("Done!")
+		break	
+
+	k = cv2.waitKey(1)
+	if k == 32:
+		print("Collecting data")
+		collect = True
+		
+	elif k == ord('q'):
+		print("Exiting..")
 		break
+
+	if collect == True:
+		img_path = os.path.join(path, img_dir, label_name)
+		cv2.imwrite(img_path+'/'+str(+filenumber)+'.jpg', frame)
+		filenumber += 1		
+
 
 cap.release()
 cv2.destroyAllWindows()
@@ -54,5 +74,3 @@ cv2.destroyAllWindows()
 # Take pictures with keystroke
 
 
-
-# Save as argv childfolder 
