@@ -18,6 +18,7 @@ from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+from tensorflow.keras.layers import Input
 
 target_classes = {
 	'rock':0, 
@@ -26,7 +27,7 @@ target_classes = {
 	'none':3}
 imagepath = 'images' # Name of imagefolder
 
-class_length = len(target_classes)
+CLASS_LENGTH = len(target_classes)
 
 # Read in all images a numpy array using opencv
 def sorted_alphanumeric(data):
@@ -45,12 +46,10 @@ for target in target_classes:
 	target_folder = os.path.join(target_path, target)
 	f = []
 	for (dirpath, dirnames, filenames) in walk(target_folder):
-		#print(filenames)
 		f.extend(filenames)
 		f = sorted_alphanumeric(f)
-		print(target_folder+'{}{}'.format('/',f[0]))
 	for file in f:
-		imgpath = target_folder+'{}{}'.format('/',f[0])
+		imgpath = target_folder+'{}{}'.format('/',file)
 		img = cv2.imread(imgpath)
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		img = cv2.resize(img, (227,227))
@@ -64,13 +63,14 @@ labels = to_categorical(labels)
 
 ################## Train model ####################
 
-base_model = InceptionV3(weights='imagenet', include_top=False)
+input_tensor = Input(shape=(227, 227, 3))
+base_model = InceptionV3(input_tensor=input_tensor, weights='imagenet', include_top=False)
 
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(1024, activation='relu')(x)
 # Add a logistic layer with our rock,paper,scissors classes
-predictions = Dense(class_length, activation='softmax')(x)
+predictions = Dense(CLASS_LENGTH, activation='softmax')(x)
 
 model = Model(inputs=base_model.input, outputs=predictions)
 
@@ -79,12 +79,13 @@ model = Model(inputs=base_model.input, outputs=predictions)
 for layer in base_model.layers:
     layer.trainable = False
 
-model.compile(
-	optimizer=rmsprop(lr=0.001), 
-	loss='categorical_crossentropy',
-	metrics=['accuracy'])
+from tensorflow.keras.optimizers import RMSprop
+model.compile(optimizer=RMSprop(lr=0.0001), 
+	loss='categorical_crossentropy', 
+	metrics=['accuracy']
+)
 
-model.fit(data, labels, epochs=5)
+model.fit(data, labels, epochs=1)
 # visualize layer names and layer indices to see how many layers we should freeze:
 # for i, layer in enumerate(base_model.layers):
 #    print(i, layer.name)
@@ -98,13 +99,14 @@ for layer in model.layers[249:]:
 
 # Recompile the model for these modifications to take effect
 from tensorflow.keras.optimizers import SGD
-model.compile(
-	optimizer=SGD(lr=0.0001, momentum=0.9), 
-	loss='categorical_crossentropy',
-	metrics=['accuracy'])
+model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), 
+	loss='categorical_crossentropy', 
+	metrics=['accuracy']
+)
+
 
 # Train the model againn
-model.fit(data, labels, epochs=5)
+model.fit(data, labels, epochs=1)
 
 
 # Save the model

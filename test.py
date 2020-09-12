@@ -65,12 +65,11 @@ for target in target_classes:
 	f = []
 
 	for (dirpath, dirnames, filenames) in walk(target_folder):
-		#print(filenames)
 		f.extend(filenames)
 		f = sorted_alphanumeric(f)
 		f = f[:10]
 	for file in f:
-		imgpath = target_folder+'{}{}'.format('/',f[0])
+		imgpath = target_folder+'{}{}'.format('/',file)
 		img = cv2.imread(imgpath)
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		img = cv2.resize(img, (227,227))
@@ -88,7 +87,7 @@ model = tf.keras.models.load_model('rock-paper-scissors-model.h5')
 # Predict on some data
 predictions = model.predict(np.array(data), verbose = 1, use_multiprocessing = False)
 
-#print(predictions[0], "Predicted: {}".format(move_name))
+print(dataset_pathlist)
 
 for i, prediction in enumerate(predictions):
 	print(dataset_pathlist[i])
