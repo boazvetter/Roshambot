@@ -12,20 +12,29 @@ import numpy as np
 import cv2
 import re
 
+from keras.utils import to_categorical
+
 from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 
-target_classes = ['rock', 'paper', 'scissors', 'none']
+target_classes = {
+	'rock':0, 
+	'paper':1, 
+	'scissors':2, 
+	'none':3}
 imagepath = 'images' # Name of imagefolder
 
 
-# TODO: Read in all images a numpy array using opencv
+# Read in all images a numpy array using opencv
 def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
     return sorted(data, key=alphanum_key)
+
+def to_numeric(label):
+	return target_classes[label]
 
 path = os.getcwd()
 dataset = []
@@ -48,11 +57,14 @@ for target in target_classes:
 
 # Create one-hot encoding to avoid errors with label length
 data, labels = zip(*dataset)
-labels = 
+labels = list(map(to_numeric, labels))
+labels = to_categorical(labels)
 
-dataset = dataset.to_categorical() 
+# Train model
 
-  
+
+
+ 
 
 
 
