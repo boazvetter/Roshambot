@@ -13,7 +13,16 @@ import re
 import cv2
 import numpy as np
 import tensorflow as tf
+import keras
+
 from keras.utils import to_categorical
+from keras.utils.generic_utils import CustomObjectScope
+
+with CustomObjectScope({'relu6': keras.applications.mobilenet.relu6,
+	'DepthwiseConv2D': keras.applications.mobilenet.DepthwiseConv2D}):
+    model = tf.keras.models.load_model('rock-paper-scissors-model.h5',
+    	custom_objects={'relu6': keras.applications.mobilenet.relu6})
+
 
 target_classes = {
 	'rock':0, 
@@ -72,7 +81,7 @@ for target in target_classes:
 		imgpath = target_folder+'{}{}'.format('/',file)
 		img = cv2.imread(imgpath)
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-		img = cv2.resize(img, (227,227))
+		img = cv2.resize(img, (224,224))
 		dataset.append([img, target])
 		dataset_pathlist.append(imgpath)
 
@@ -82,7 +91,7 @@ labels = list(map(to_numeric, labels))
 labels = to_categorical(labels)
 
 # Load the last model that we trained
-model = tf.keras.models.load_model('rock-paper-scissors-model.h5')
+#model = tf.keras.models.load_model('rock-paper-scissors-model.h5')
 
 # Predict on some data
 predictions = model.predict(np.array(data), verbose = 1, use_multiprocessing = False)
