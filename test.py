@@ -22,16 +22,27 @@ target_classes = {
 	'none':3}
 imagepath = 'images' # Name of imagefolder
 
-def to_numeric(label):
-	if label == 'rock':
+def to_numeric(prediction):
+	if prediction == 'rock':
 		return 0
-	elif label == 'paper':
+	elif prediction == 'paper':
 		return 1
-	elif label == 'scissors':
+	elif prediction == 'scissors':
 		return 2
-	elif label == 'none':
+	elif prediction == 'none':
 		return 3
 	pass
+
+def to_string(prediction):
+	if prediction == 0:
+		return 'rock'
+	elif prediction == 1:
+		return 'paper'
+	elif prediction == 2:
+		return 'scissors'
+	elif prediction == 3:
+		return 'none'
+	pass	
 
 def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
@@ -76,12 +87,12 @@ model = tf.keras.models.load_model('rock-paper-scissors-model.h5')
 
 # Predict on some data
 predictions = model.predict(np.array(data), verbose = 1, use_multiprocessing = False)
-move_code = np.argmax(predictions[0])
-move_name = to_numeric(move_code)
 
 #print(predictions[0], "Predicted: {}".format(move_name))
 
 for i, prediction in enumerate(predictions):
 	print(dataset_pathlist[i])
-	print(prediction, "Predicted: {}".format(move_name))
+	predicted_move = np.argmax(prediction)
+	predicted_move = to_string(predicted_move)
+	print(prediction, "Predicted: {}".format(predicted_move))
 	print("---------------------------------------------")
