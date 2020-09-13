@@ -92,8 +92,8 @@ preds=Dense(4,activation='softmax')(x) #final layer with softmax activation
 
 model=Model(inputs=base_model.input,outputs=preds)
 
-for i,layer in enumerate(model.layers):
-  print(i,layer.name)
+# for i,layer in enumerate(model.layers):
+#   print(i,layer.name)
 
 for layer in model.layers:
     layer.trainable=False
@@ -105,7 +105,7 @@ for layer in model.layers[20:]:
 
 model.compile(optimizer='Adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-model.fit(np.array(data), np.array(labels), epochs=10)
+model.fit(np.array(data), np.array(labels), epochs=5)
 
 # Save the model
 model.save('rock-paper-scissors-model.h5')

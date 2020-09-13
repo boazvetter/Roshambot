@@ -52,7 +52,7 @@ while(True):
 
     cv2.rectangle(frame, (int(width*0.25),int(height*0.25)), (int(width*0.75),int(height*0.75)), (0, 255, 0), 3)
 
-    roi = frame[:,:] # TODO Change region of interest to a crop later on
+    roi = frame[int(height*0.25):int(height*0.75), int(width*0.25):int(width*0.75)]
     img = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (224, 224))
     data = np.array(img)

@@ -11,7 +11,7 @@ VU Amsterdam
 import sys
 import cv2
 import os
-
+import copy
 
 try:
 	label_name = sys.argv[1]
@@ -46,7 +46,12 @@ collect = False
 while(True):
 	ret, frame = cap.read()
 
-	cv2.imshow('Dataset creator', frame)
+	width = cap.get(cv2.CAP_PROP_FRAME_WIDTH )
+	height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT )
+
+	img = copy.deepcopy(frame)
+	cv2.rectangle(img, (int(width*0.25),int(height*0.25)), (int(width*0.75),int(height*0.75)), (0, 255, 0), 3)
+	cv2.imshow('Dataset creator', img)
 
 	if filenumber == int(num_pictures):
 		print("Done!")
@@ -62,8 +67,9 @@ while(True):
 		break
 
 	if collect == True:
-		img_path = os.path.join(path, img_dir, label_name)
-		cv2.imwrite(img_path+'/'+str(+filenumber)+'.jpg', frame)
+		img_path = os.path.join(path, img_dir, label_name)		
+		roi = frame[int(height*0.25):int(height*0.75), int(width*0.25):int(width*0.75)]
+		cv2.imwrite(img_path+'/'+str(+filenumber)+'.jpg', roi)
 		filenumber += 1		
 
 
