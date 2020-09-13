@@ -105,53 +105,7 @@ for layer in model.layers[20:]:
 
 model.compile(optimizer='Adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-model.fit(np.array(data), np.array(labels), epochs=2)
+model.fit(np.array(data), np.array(labels), epochs=10)
 
 # Save the model
 model.save('rock-paper-scissors-model.h5')
-
-
-# input_tensor = Input(shape=(227, 227, 3))
-# base_model = InceptionV3(input_tensor=input_tensor, weights='imagenet', include_top=False)
-
-# x = base_model.output
-# x = GlobalAveragePooling2D()(x)
-# x = Dense(1024, activation='relu')(x)
-# # Add a logistic layer with our rock,paper,scissors classes
-# predictions = Dense(CLASS_LENGTH, activation='softmax')(x)
-
-# model = Model(inputs=base_model.input, outputs=predictions)
-
-# # First: train only the top layers (which were randomly initialized)
-# # i.e. freeze all convolutional InceptionV3 layers
-# for layer in base_model.layers:
-#     layer.trainable = False
-
-# from tensorflow.keras.optimizers import RMSprop
-# model.compile(optimizer=RMSprop(lr=0.0001), 
-# 	loss='categorical_crossentropy', 
-# 	metrics=['accuracy']
-# )
-
-# model.fit(data, labels, epochs=1)
-# # visualize layer names and layer indices to see how many layers we should freeze:
-# # for i, layer in enumerate(base_model.layers):
-# #    print(i, layer.name)
-
-# # train the top 2 inception blocks, i.e. we will freeze
-# # the first 249 layers and unfreeze the rest:
-# for layer in model.layers[:249]:
-#    layer.trainable = False
-# for layer in model.layers[249:]:
-#    layer.trainable = True
-
-# # Recompile the model for these modifications to take effect
-# from tensorflow.keras.optimizers import SGD
-# model.compile(optimizer=SGD(lr=0.0001, momentum=0.9), 
-# 	loss='categorical_crossentropy', 
-# 	metrics=['accuracy']
-# )
-
-
-# # Train the model againn
-# model.fit(data, labels, epochs=1)
