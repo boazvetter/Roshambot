@@ -97,7 +97,7 @@ model=Model(inputs=base_model.input,outputs=preds)
 
 for layer in model.layers:
     layer.trainable=False
-# or if we want to set the first 20 layers of the network to be non-trainable
+# Freeze the first 20 layers in the network, train last 20.
 for layer in model.layers[:20]:
     layer.trainable=False
 for layer in model.layers[20:]:

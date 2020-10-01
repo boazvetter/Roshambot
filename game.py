@@ -53,7 +53,6 @@ def move_arm(prediction):
     pass    
 
 
-# TODO Show webcam feed, overlay prediction
 cap = cv2.VideoCapture(0)
 ready_to_move = False
 
@@ -67,6 +66,7 @@ while(True):
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT )
     fps =  cap.get(cv2.CAP_PROP_FPS)
 
+    # Draw box
     cv2.rectangle(frame, (int(width*0.25),int(height*0.25)), (int(width*0.75),int(height*0.75)), (0, 255, 0), 3)
 
     roi = frame[int(height*0.25):int(height*0.75), int(width*0.25):int(width*0.75)]
@@ -84,7 +84,7 @@ while(True):
     	font, 1.2, (255,255,255), 2, cv2.LINE_AA)
     cv2.imshow('Roshambot',frame)
 
-    # Move the robot arm
+    # Move the robot arm to desired position
     if(time.perf_counter() > (previousTime+3)):
         if (np.argmax(prediction) != 3):
             print("################################## Moving arm #############################")
@@ -100,14 +100,4 @@ cv2.destroyAllWindows()
 
 
 
-
-# TODO implement robot RPS strategy
-
-# TODO implement python-arduino serial interface
-
-
-
-# TODO scoreboard
-
-# TODO voice 
 
