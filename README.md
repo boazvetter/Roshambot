@@ -5,7 +5,10 @@ An AI that will play Roshambo, also known as Rock-Paper-Scissors with humans. Th
 # Installation
 
 This project runs on Python 3.7 and uses Tensorflow+Keras to recognize hands gestures.
-Setup a virtual environment and use requirements.txt to install all dependencies.
+Setup a virtual environment and install all dependencies:
+```sh
+pip install -r requirements.txt
+```
 
 # Use
 
