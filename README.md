@@ -2,6 +2,8 @@
 
 An AI that will play Roshambo, also known as Rock-Paper-Scissors with humans. Through webcam input, the AI recognizes what hand gesture is played and strategizes accordingly. The strategy is then sent over serial communication to an Arduino microcontroller which is connected to a robot arm.
 
+Video: https://www.youtube.com/watch?v=H3N9UBhsnaM
+
 # Installation
 
 This project runs on Python 3.7 and uses Tensorflow+Keras to recognize hands gestures.
