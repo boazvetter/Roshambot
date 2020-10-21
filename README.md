@@ -13,6 +13,7 @@ pip install -r requirements.txt
 ```
 
 # Use
+Roshambot_comm.ino: Arduin slave script that listens on serial communication line for commands in the python script (Game.py)
 
 Create_dataset.py: Usage: python3 create_dataset.py GESTURE PICTURES
 This is used to create a dataset for the neural network to learn gestures from. At least 100 training examples per gesture is advised.
